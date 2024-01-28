@@ -8,3 +8,4 @@ test tsetset        F   12  123     123     Australian     1 .1 .1111 2.2.2222
 asd asd             F   12  213     123     Thai           1 .1 .1111 2.2.2222
 asd asd             F   12  213     13      Russian        1 .1 .1111  
 asd                 F   2   2       2       Russian        1 .1 .2001 2.2.2002
+Test Test2          F   12  123     213     Moldovan       5 .5 .505  1.11.2111

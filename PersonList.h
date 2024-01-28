@@ -14,10 +14,21 @@ public:
 	int Nationality = 0;
 	std::string NationalityArray[6] = { "English", "Russian", "Thai", "Moldovan", "German", "Australian"};
 	tm Tmb;
-	std::array <int, 3> BirthDate = { 0,0,0 };
-	std::array <int, 3> DeathDate = { 0,0,0 };
+	int BirthDay = 0;
+	int BirthMonth = 0;
+	int BirthYear = 0;
+	int DeathDay = 0;
+	int DeathMonth = 0;
+	int DeathYear = 0;
+	const int MinDay = 1;
+	const int MaxDay = 31;
+	const int MinMonth = 1;
+	const int MaxMonth = 12;
+	const int MinYear = 1;
 	std::string DeathDateString = " ";
 	std::string OutputFile = " ";
+
+
 
 	std::string CheckLine(std::string Line)
 	{
@@ -30,35 +41,64 @@ public:
 		}
 		return Line;
 	}
-
-	std::string CheckSex()
-	{
-		std::getline(std::cin, Sex);
-		while (Sex != "F" && Sex != "M")
-		{
-			std::cout << "Wrong sex! Enter person sex (M or F):";
-			std::getline(std::cin, Sex);
-		}
-		return Sex;
-	}
 	
 	int CheckNum(int Num)
 	{
+		const int MinNum = 0;
+		const int MaxNum = 300;
 		std::cin >> Num;
-		while (Num < 0 || Num > 300)
+		while (Num < MinNum || Num > MaxNum)
 		{
 			std::cout << "Wrong number (to low or to high)! Try again: ";
 			std::cin >> Num;
 		}
 		return Num;
 	}
-	
-	int CheckNationality()
+
+	void InputName()
 	{
-		std::cout << std::endl;
-		for (auto i = 0; i < NationalityArray->size()-1; i++)
+		std::cout << "Enter person name: ";
+		Name = CheckLine(Name);
+	}
+
+	void InputSex()
+	{
+		std::cout << "Enter person sex (M or F): ";
+		std::getline(std::cin, Sex);
+		while (Sex != "F" && Sex != "M")
 		{
-			std::cout << i+1 << ": " << NationalityArray[i] << std::endl;
+			std::cout << "Wrong sex! Enter person sex (M or F):";
+			std::getline(std::cin, Sex);
+		}
+	}
+
+	void InputAge()
+	{
+		std::cout << "Enter person age: ";
+		Age = CheckNum(Age);
+	}
+	
+	void InputHeight()
+	{
+		std::cout << "Enter person height: ";
+		Height = CheckNum(Height);
+	}
+
+	void InputWeight()
+	{
+		std::cout << "Enter person weight: ";
+		Weight = CheckNum(Weight);
+	}
+
+	void InputNationality()
+	{
+		std::cout << std::endl << "Choose person nationality from a list: ";
+		std::cout << std::endl;
+		int Index = 1;
+		for (std::string Element : NationalityArray)
+		{
+			std::cout << Index << ": " << Element << std::endl;
+			Index++;
 		}
 		std::cin >> Nationality;
 		while (Nationality < 1 || Nationality >= NationalityArray->size())
@@ -66,72 +106,82 @@ public:
 			std::cout << "Number not from the list! Try again: ";
 			std::cin >> Nationality;
 		}
-		return Nationality;
 	}
 	
-	std::array<int, 3> CheckDate()
+	void InputBirthDate()
 	{
+		std::cout << "Enter person birth date: ";
 		std::cin >> std::get_time(&Tmb, "%d.%m.%Y");
-		std::array<int, 3> Date = { Tmb.tm_mday, Tmb.tm_mon + 1, Tmb.tm_year + 1900};
-		while (Date[0] < 0 || Date[0] > 31)
+		BirthDay = Tmb.tm_mday;
+		BirthMonth = Tmb.tm_mon + 1;
+		BirthYear = Tmb.tm_year + 1900;
+		while (BirthDay < MinDay || BirthDay > MaxDay)
 		{
 			std::cin.clear();
 			std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
 			std::cout << "Wrong day! Try again: ";
-			std::cin >> Date[0];
+			std::cin >> BirthDay;
 		}
-		while (Date[1] < 0 || Date[1] > 12)
+		while (BirthMonth < MinMonth || BirthMonth > MaxMonth)
 		{
 			std::cin.clear();
 			std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
 			std::cout << "Wrong month! Try again: ";
-			std::cin >> Date[1];
+			std::cin >> BirthMonth;
 		}
-		while (Date[2] < 0)
+		while (BirthYear < MinYear)
 		{
 			std::cin.clear();
 			std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
 			std::cout << "Wrong year! Try again: ";
-			std::cin >> Date[2];
+			std::cin >> BirthYear;
 		}
-		return Date;
 	}
 
-	std::array<int, 3> GetDeathDate()
+	void InputDeathDate()
 	{
+		std::cout << "Enter person death date (0 if person still alive): ";
 		std::string Input = " ";
 		std::cin >> Input;
 		if (Input == "0")
 		{
-			return { 0,0,0 };
+			DeathDay = 0;
 		}
 		else
 		{
 			std::istringstream DateInput(Input);
 			DateInput >> std::get_time(&Tmb, "%d.%m.%Y");
-			std::array<int, 3> Date = { Tmb.tm_mday, Tmb.tm_mon + 1, Tmb.tm_year + 1900 };
-			while (Date[0] < 0 || Date[0] > 31)
+			DeathDay = Tmb.tm_mday;
+			DeathMonth = Tmb.tm_mon + 1;
+			DeathYear = Tmb.tm_year + 1900;
+			while (DeathDay < MinDay || DeathDay > MaxDay)
 			{
 				std::cin.clear();
 				std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
 				std::cout << "Wrong day! Try again: ";
-				std::cin >> Date[0];
+				std::cin >> DeathDay;
 			}
-			while (Date[1] < 0 || Date[1] > 12)
+			while (DeathMonth < MinMonth || DeathMonth > MaxMonth)
 			{
 				std::cin.clear();
 				std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
 				std::cout << "Wrong month! Try again: ";
-				std::cin >> Date[1];
+				std::cin >> DeathMonth;
 			}
-			while (Date[2] < 0)
+			while (DeathYear < MinYear)
 			{
 				std::cin.clear();
 				std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
 				std::cout << "Wrong year! Try again: ";
-				std::cin >> Date[2];
+				std::cin >> DeathYear;
 			}
-			return Date;
+		}
+		std::stringstream Stream;
+		Stream << DeathDay << "." << DeathMonth << "." << DeathYear;
+		Stream >> DeathDateString;
+		if (DeathDay == 0)
+		{
+			DeathDateString = " ";
 		}
 	}
 
@@ -143,7 +193,7 @@ public:
 			 << "Height : " << Height << std::endl
 			 << "Weight: " << Weight << std::endl
 			 << "Nationality: " << NationalityArray[Nationality-1] << std::endl
-			 << "BirthDate: " << BirthDate[0] << "." << BirthDate[1] << "." << BirthDate[2] << std::endl
+			 << "BirthDate: " << BirthDay << "." << BirthMonth << "." << BirthYear << std::endl
 			 << "DeathDate: " << DeathDateString;
 	}
 
@@ -159,7 +209,7 @@ public:
 				<< std::setw(8) << std::left << Height
 				<< std::setw(8) << std::left << Weight
 				<< std::setw(15) << std::left << NationalityArray[Nationality-1]
-				<< std::setw(2) << std::left << BirthDate[0] << "." << std::setw(2) << std::left << BirthDate[1] << "." << std::setw(4) << BirthDate[2]
+				<< std::setw(2) << std::left << BirthDay << "." << std::setw(2) << std::left << BirthMonth << "." << std::setw(4) << BirthYear
 				<< " " << std::left << DeathDateString;
 		}
 		OutputFile.close();

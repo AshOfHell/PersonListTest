@@ -9,102 +9,67 @@
 
 #include "PersonList.h"
 
-using namespace std;
-
 int main()
 {
     Person Man;
-    string Choice = " ";
+    std::string Choice = " ";
     bool Correct = false;
 
     while (!Correct)
     {
         //Ask user about program behavior;
-        cout << "1 - view data, 2 - input new data, q - quit: ";
-        cin >> Choice;
+        std::cout << "1 - view data, 2 - input new data, q - quit: ";
+        std::cin >> Choice;
         if (Choice != "1" && Choice != "2" && Choice != "q")
         {
-            cout << "incorrect choice, retype: ";
+            std::cout << "Incorrect choice, retype: ";
         }
         
         //Show input data on screen.
         else if (Choice == "1")
         {
-            ifstream InputFile("base.txt"); // file name
-            string InputLine = " ";
+            std::ifstream InputFile("base.txt"); // file name
+            std::string InputLine = " ";
             if (InputFile.is_open())
             {
-                while (getline(InputFile, InputLine))
+                while (std::getline(InputFile, InputLine))
                 {
-                    cout << InputLine << endl;
+                    std::cout << InputLine << std::endl;
                 }
+                InputFile.close();
             }
             else
-                cout << "No base.txt file in the program directory." << endl;
+                std::cout << "No base.txt file in the program directory." << std::endl;
             Correct = true;
         }
         
         //New input data from user.
         else if (Choice == "2")
         {
-            //Name
-            cout << "Enter person name: ";
-            Man.Name = Man.CheckLine(Man.Name);
-            
-            //Sex
-            cout << "Enter person sex (M or F): ";
-            Man.Sex = Man.CheckSex();
+            Man.InputName();
+            Man.InputSex();
+            Man.InputAge();
+            Man.InputHeight();
+            Man.InputWeight();
+            Man.InputNationality();
+            Man.InputBirthDate();
+            Man.InputDeathDate();
+            Man.PrintOnScreen();
 
-            //Age
-            cout << "Enter person age: ";
-            Man.Age = Man.CheckNum(Man.Age);
-
-            //Height
-            cout << "Enter person height: ";
-            Man.Height = Man.CheckNum(Man.Height);
-            
-            //Weight
-            cout << "Enter person weight: ";
-            Man.Weight = Man.CheckNum(Man.Weight);
-
-            //Nationality
-            cout << endl << "Choose person nationality from a list: ";
-            Man.Nationality = Man.CheckNationality();
-
-            //BirthDate
-            cout << "Enter person birth date: ";
-            Man.BirthDate = Man.CheckDate();
-
-            //DeathDate
-            cout << "Enter person death date (0 if person still alive): ";
-            Man.DeathDate = Man.GetDeathDate();
-            
-            //Show result to user
-            stringstream Stream;
-            Stream << Man.DeathDate[0] << "." << Man.DeathDate[1] << "." << Man.DeathDate[2];
-            Stream >> Man.DeathDateString;
-            if (Man.DeathDate[0] == 0)
-            {
-                Man.DeathDateString = " ";
-                Man.PrintOnScreen();
-            }
-            else            
-                Man.PrintOnScreen();
-            
             //Ask to write a file
-            cout << endl << endl << "Write to file? (Y/N): ";
+            std::cout << std::endl << std::endl << "Write to file? (Y/N): ";
             bool Flag = false;
             while (!Flag)
             {
-                string Input = " ";
-                cin >> Input;
+                std::string Input = " ";
+                std::cin >> Input;
                 if (Input != "Y" && Input != "N")
                 {
-                    cout << "incorrect choice, retype: ";
+                    std::cout << "Incorrect choice, retype: ";
                 }
                 else if (Input == "N")
                 {
-                    cout << "You choose not to save. Bye.";
+                    std::cout << "You choose not to save. Bye.";
                     Flag = true;
                 }
                 else if (Input == "Y")
@@ -119,4 +84,5 @@ int main()
         else
             break;
     }
+    return 0;
 }
